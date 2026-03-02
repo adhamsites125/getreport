@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GetReport - Student Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Animated background elements */
+        .bg-animation {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            animation: float 20s infinite;
+        }
+
+        .circle:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .circle:nth-child(2) {
+            width: 120px;
+            height: 120px;
+            top: 70%;
+            left: 80%;
+            animation-delay: 3s;
+        }
+
+        .circle:nth-child(3) {
+            width: 60px;
+            height: 60px;
+            top: 40%;
+            left: 70%;
+            animation-delay: 1s;
+        }
+
+        .circle:nth-child(4) {
+            width: 100px;
+            height: 100px;
+            top: 80%;
+            left: 20%;
+            animation-delay: 2s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0.3;
+            }
+            50% {
+                transform: translateY(-50px) rotate(180deg);
+                opacity: 0.6;
+            }
+        }
+
+        .container {
+            background: white;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 50px;
+            max-width: 500px;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo h1 {
+            font-size: 42px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .logo p {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        .input-group input.error {
+            border-color: #ff4757;
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .file-input-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 15px 20px;
+            border: 2px dashed #667eea;
+            border-radius: 15px;
+            background: #f8f9fa;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        .file-input-label:hover {
+            background: #e9ecef;
+            transform: translateY(-2px);
+        }
+
+        .file-input-label.has-file {
+            border-color: #28a745;
+            color: #28a745;
+            background: #d4edda;
+        }
+
+        input[type="file"] {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .file-preview {
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .file-preview img {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 600;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #c3e6cb;
+        }
+
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 2px solid #f5c6cb;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            display: none;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Images Section */
+        .images-section {
+            display: none;
+            margin-top: 40px;
+            animation: slideDown 0.5s ease-out;
+        }
+
+        .images-section.show {
+            display: block;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .student-info-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-weight: 600;
+            opacity: 0.9;
+        }
+
+        .info-value {
+            font-weight: 500;
+        }
+
+        .stats-card {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .stats-number {
+            font-size: 56px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stats-label {
+            font-size: 18px;
+            color: #666;
+            margin-top: 10px;
+        }
+
+        .images-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 25px;
+        }
+
+        .image-card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            opacity: 0;
+            animation: fadeInUp 0.5s ease-out forwards;
+        }
+
+        .image-card:nth-child(1) { animation-delay: 0.1s; }
+        .image-card:nth-child(2) { animation-delay: 0.2s; }
+        .image-card:nth-child(3) { animation-delay: 0.3s; }
+        .image-card:nth-child(4) { animation-delay: 0.4s; }
+        .image-card:nth-child(5) { animation-delay: 0.5s; }
+        .image-card:nth-child(6) { animation-delay: 0.6s; }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .image-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .image-number {
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 12px;
+            font-size: 16px;
+        }
+
+        .image-preview {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            border: 3px solid #e0e0e0;
+            transition: all 0.3s ease;
+        }
+
+        .image-preview:hover {
+            border-color: #667eea;
+            transform: scale(1.02);
+        }
+
+        .download-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .download-all-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #56ab2f 0%, #a8e063 100%);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 25px;
+        }
+
+        .download-all-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(86, 171, 47, 0.4);
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 600;
+            border: 2px solid #f5c6cb;
+            margin-top: 20px;
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .new-search-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .new-search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Modal for full-size image */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            max-width: 90%;
+            max-height: 90%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 10px;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 30px;
+            right: 50px;
+            color: white;
+            font-size: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close-modal:hover {
+            color: #667eea;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation">
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+    </div>
+
+    <div class="container">
+        <div class="logo">
+            <h1>📊 GetReport</h1>
+            <p>Enter your National ID to access your images</p>
+            <p style="font-size: 12px; color: #999; margin-top: 8px;">
+                Browser: <span id="browserName" style="font-weight: 600;"></span>
+            </p>
+        </div>
+
+        <form id="loginForm">
+            <div class="input-group">
+                <label for="name">👤 Student Name</label>
+                <input type="text" id="name" placeholder="Enter your full name" autocomplete="off">
+            </div>
+
+            <div class="input-group">
+                <label for="class">📚 Class</label>
+                <input type="text" id="class" placeholder="Enter your class (e.g., 10A)" autocomplete="off">
+            </div>
+
+            <div class="input-group">
+                <label for="subject">📖 Subject</label>
+                <input type="text" id="subject" placeholder="Enter subject name" autocomplete="off">
+            </div>
+
+            <div class="input-group">
+                <label for="nationalId">🆔 National ID</label>
+                <input type="text" id="nationalId" placeholder="Enter your National ID number" autocomplete="off">
+            </div>
+
+            <button type="submit" class="submit-btn">Access Images</button>
+        </form>
+
+        <div class="spinner" id="spinner"></div>
+        <div class="message" id="message"></div>
+
+        <!-- Images Section -->
+        <div class="images-section" id="imagesSection">
+            <div class="student-info-card">
+                <div class="info-row">
+                    <span class="info-label">👤 Name:</span>
+                    <span class="info-value" id="displayName">-</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">📚 Class:</span>
+                    <span class="info-value" id="displayClass">-</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">📖 Subject:</span>
+                    <span class="info-value" id="displaySubject">-</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">🆔 National ID:</span>
+                    <span class="info-value" id="displayNationalId">-</span>
+                </div>
+            </div>
+
+            <div class="stats-card">
+                <div class="stats-number" id="imageCount">0</div>
+                <div class="stats-label">Images Available</div>
+            </div>
+
+            <button class="download-all-btn" id="downloadAllBtn" onclick="downloadAllImages()">
+                ⬇️ Download All Images
+            </button>
+
+            <div class="images-grid" id="imagesGrid">
+                <!-- Images will be loaded here -->
+            </div>
+
+            <button class="new-search-btn" onclick="resetForm()">
+                🔄 Access Another National ID
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal for full-size image -->
+    <div id="imageModal" class="modal" onclick="closeModal()">
+        <span class="close-modal">&times;</span>
+        <img class="modal-content" id="modalImage">
+    </div>
+
+    <script>
+        const form = document.getElementById('loginForm');
+        const spinner = document.getElementById('spinner');
+        const messageDiv = document.getElementById('message');
+
+        // Detect and display browser on page load
+        window.onload = function() {
+            detectBrowser();
+        };
+
+        function detectBrowser() {
+            const userAgent = navigator.userAgent;
+            let browserName = "Unknown Browser";
+            
+            if (userAgent.indexOf("Edg") > -1) {
+                browserName = "Microsoft Edge";
+            } else if (userAgent.indexOf("Chrome") > -1) {
+                browserName = "Google Chrome";
+            } else if (userAgent.indexOf("Firefox") > -1) {
+                browserName = "Mozilla Firefox";
+            } else if (userAgent.indexOf("Safari") > -1) {
+                browserName = "Apple Safari";
+            } else if (userAgent.indexOf("Opera") > -1 || userAgent.indexOf("OPR") > -1) {
+                browserName = "Opera";
+            }
+            
+            document.getElementById('browserName').textContent = browserName;
+        }
+
+        // Play click sound effect
+        function playSound(frequency = 800) {
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.value = frequency;
+                oscillator.type = 'sine';
+                
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.1);
+            } catch (e) {
+                console.log('Audio not supported');
+            }
+        }
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            playSound(1000);
+            
+            const name = document.getElementById('name').value.trim();
+            const classValue = document.getElementById('class').value.trim();
+            const subject = document.getElementById('subject').value.trim();
+            const nationalId = document.getElementById('nationalId').value.trim();
+
+            messageDiv.style.display = 'none';
+            messageDiv.className = 'message';
+
+            document.querySelectorAll('input').forEach(input => {
+                input.classList.remove('error');
+            });
+
+            if (!name || !classValue || !subject || !nationalId) {
+                const missing = [];
+                if (!name) {
+                    missing.push('Name');
+                    document.getElementById('name').classList.add('error');
+                }
+                if (!classValue) {
+                    missing.push('Class');
+                    document.getElementById('class').classList.add('error');
+                }
+                if (!subject) {
+                    missing.push('Subject');
+                    document.getElementById('subject').classList.add('error');
+                }
+                if (!nationalId) {
+                    missing.push('National ID');
+                    document.getElementById('nationalId').classList.add('error');
+                }
+                
+                showMessage('error', `⚠️ Please input: ${missing.join(', ')}`);
+                return;
+            }
+
+            spinner.style.display = 'block';
+
+            setTimeout(() => {
+                spinner.style.display = 'none';
+
+                const imageCodes = JSON.parse(localStorage.getItem('imageCodes') || '{}');
+                
+                if (imageCodes[nationalId]) {
+                    const collection = imageCodes[nationalId];
+                    const images = collection.images || [];
+                    
+                    if (images.length === 0) {
+                        showMessage('error', '❌ No images found for this National ID!');
+                        playSound(500);
+                        return;
+                    }
+                    
+                    const studentInfo = {
+                        name: name,
+                        class: classValue,
+                        subject: subject,
+                        nationalId: nationalId,
+                        collectionTitle: collection.title,
+                        timestamp: new Date().toISOString()
+                    };
+                    
+                    localStorage.setItem('currentStudent', JSON.stringify(studentInfo));
+                    
+                    // Save access record
+                    const matches = JSON.parse(localStorage.getItem('imageMatches') || '[]');
+                    matches.push({
+                        ...studentInfo,
+                        imagesAccessed: images.length
+                    });
+                    localStorage.setItem('imageMatches', JSON.stringify(matches));
+                    
+                    showMessage('success', `✅ National ID Verified! Found ${images.length} image(s).`);
+                    
+                    // Display images on the same page
+                    setTimeout(() => {
+                        displayImages(studentInfo, images);
+                        playSound(1200);
+                    }, 1000);
+                } else {
+                    showMessage('error', '❌ Report Not Found');
+                    document.getElementById('nationalId').classList.add('error');
+                    playSound(500);
+                }
+            }, 1500);
+        });
+
+        function displayImages(studentInfo, images) {
+            // Hide form
+            document.getElementById('loginForm').style.display = 'none';
+            
+            // Show images section
+            const imagesSection = document.getElementById('imagesSection');
+            imagesSection.classList.add('show');
+            
+            // Display student info
+            document.getElementById('displayName').textContent = studentInfo.name;
+            document.getElementById('displayClass').textContent = studentInfo.class;
+            document.getElementById('displaySubject').textContent = studentInfo.subject;
+            document.getElementById('displayNationalId').textContent = studentInfo.nationalId;
+            
+            // Display image count
+            document.getElementById('imageCount').textContent = images.length;
+            
+            // Display images
+            const grid = document.getElementById('imagesGrid');
+            grid.innerHTML = '';
+            
+            images.forEach((imageData, index) => {
+                const card = document.createElement('div');
+                card.className = 'image-card';
+                card.innerHTML = `
+                    <div class="image-number">📷 Image ${index + 1}</div>
+                    <img src="${imageData}" alt="Image ${index + 1}" class="image-preview" onclick="showModal('${imageData}')">
+                    <button class="download-btn" onclick="downloadSingleImage('${imageData}', ${index})">
+                        ⬇️ Download Image ${index + 1}
+                    </button>
+                `;
+                grid.appendChild(card);
+            });
+            
+            // Scroll to images section
+            setTimeout(() => {
+                imagesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 300);
+        }
+
+        function downloadSingleImage(imageData, index) {
+            playSound(1000);
+            const student = JSON.parse(localStorage.getItem('currentStudent'));
+            const link = document.createElement('a');
+            link.href = imageData;
+            link.download = `${student.name.replace(/\s+/g, '_')}_image_${index + 1}_${Date.now()}.png`;
+            link.click();
+        }
+
+        function downloadAllImages() {
+            playSound(1200);
+            const student = JSON.parse(localStorage.getItem('currentStudent'));
+            const imageCodes = JSON.parse(localStorage.getItem('imageCodes') || '{}');
+            const images = imageCodes[student.nationalId] || [];
+            
+            if (images.length === 0) {
+                alert('No images to download!');
+                return;
+            }
+
+            images.forEach((imageData, index) => {
+                setTimeout(() => {
+                    const link = document.createElement('a');
+                    link.href = imageData;
+                    link.download = `${student.name.replace(/\s+/g, '_')}_image_${index + 1}_${Date.now()}.png`;
+                    link.click();
+                    playSound(1000 + (index * 100));
+                }, index * 500);
+            });
+        }
+
+        function resetForm() {
+            playSound(800);
+            // Hide images section
+            document.getElementById('imagesSection').classList.remove('show');
+            
+            // Show form again
+            document.getElementById('loginForm').style.display = 'block';
+            
+            // Clear form
+            document.getElementById('loginForm').reset();
+            document.getElementById('message').style.display = 'none';
+            
+            // Remove error classes
+            document.querySelectorAll('input').forEach(input => {
+                input.classList.remove('error');
+            });
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function showModal(imageData) {
+            playSound(800);
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            modal.style.display = 'block';
+            modalImg.src = imageData;
+        }
+
+        function closeModal() {
+            playSound(600);
+            document.getElementById('imageModal').style.display = 'none';
+        }
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        function showMessage(type, text) {
+            messageDiv.className = 'message ' + type;
+            messageDiv.textContent = text;
+            messageDiv.style.display = 'block';
+            playSound(type === 'success' ? 1200 : 500);
+        }
+    </script>
+</body>
+</html>
